@@ -23,22 +23,19 @@ const PLAYERS = [
 
 // initialize players with image and strength
 const initPlayers = (players) => {
-    let detailedPlayers = '';
-    var i=0
+    let detailedPlayers = [];
 
     // Instead of forloop use Map method
     // Code here
-    detailedPlayers=players.map(function(item,index){
-        console.log("item", item)
-        if (index%2==0){
-            type1='hero'
-        }else{
-            type1='villain'
+    players.map((names,index)=>{
+        let  a=index%2 ? "villain":"hero"
+        let New = {
+            name: names,
+            type:a,
+            strength:getRandomStrength(),
+            image:`images/super-${index+1}.png`
         }
-        i++
-        item={name:players[i-1],strength:getRandomStrength(),image:`images/super-${i+1}.png`,type:type1}
-        console.log("data", item)
-        return item
+        detailedPlayers.push(New)
     })
 
     return detailedPlayers;
@@ -46,9 +43,7 @@ const initPlayers = (players) => {
 
 // getting random strength
 const getRandomStrength = () => {
-    var num =  Math.ceil(Math.random() * 100);
-    console.log("sdcsd", num)
-    return num
+    return Math.ceil(Math.random() * 100);
 }
 
 // Build player template
@@ -58,22 +53,17 @@ const buildPlayers = (players, type) => {
     // Instead of using for loop
     // Use chaining of Array methods - filter, map and join
     // Type your code here
-    var hero = players.filter(function(item){
-        return item.type=="hero"
+    players.map((player)=>{
+        if (player.type==type){
+
+        let div = `<div class="player">
+                        <img src="${player.image}" alt="">
+                        <div class="name">${player.name}</div>  
+                        <div class="strength">${player.strength}</div>
+                       </div>`;
+            fragment += div;
+        }
     })
-    var villain = players.filter(function(item){
-        return item.type=="villain"
-    })
-    if (type=="hero"){
-        fragment=hero.map(function(item){
-            return `<div class="player"><img src="${item.image}"alt=""><div class="name">${item.name}</div><div class="strength">${item.strength}</div></div>`
-        }).join("")
-    }else{
-        fragment=villain.map(function(item){
-            return `<div class="player"><img src="${item.image}"alt=""><div class="name">${item.name}</div><div class="strength">${item.strength}</div></div>`
-        }).join("")
-    }
-    // console.log(fragment)
 
     return fragment;
 }
